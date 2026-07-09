@@ -16,7 +16,15 @@ import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppResultsRouteImport } from './routes/_app.results'
+import { Route as AppProfileRouteImport } from './routes/_app.profile'
+import { Route as AppElectionsRouteImport } from './routes/_app.elections'
+import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppBlockchainRouteImport } from './routes/_app.blockchain'
+import { Route as AppAdminRouteImport } from './routes/_app.admin'
+import { Route as AppElectionsIdRouteImport } from './routes/_app.elections.$id'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -53,10 +61,49 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppResultsRoute = AppResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppElectionsRoute = AppElectionsRouteImport.update({
+  id: '/elections',
+  path: '/elections',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBlockchainRoute = AppBlockchainRouteImport.update({
+  id: '/blockchain',
+  path: '/blockchain',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppElectionsIdRoute = AppElectionsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppElectionsRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -68,6 +115,13 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/admin': typeof AppAdminRoute
+  '/blockchain': typeof AppBlockchainRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/elections': typeof AppElectionsRouteWithChildren
+  '/profile': typeof AppProfileRoute
+  '/results': typeof AppResultsRoute
+  '/elections/$id': typeof AppElectionsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,10 +132,18 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/admin': typeof AppAdminRoute
+  '/blockchain': typeof AppBlockchainRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/elections': typeof AppElectionsRouteWithChildren
+  '/profile': typeof AppProfileRoute
+  '/results': typeof AppResultsRoute
+  '/elections/$id': typeof AppElectionsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
@@ -89,6 +151,13 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/_app/admin': typeof AppAdminRoute
+  '/_app/blockchain': typeof AppBlockchainRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/elections': typeof AppElectionsRouteWithChildren
+  '/_app/profile': typeof AppProfileRoute
+  '/_app/results': typeof AppResultsRoute
+  '/_app/elections/$id': typeof AppElectionsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +170,13 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/admin'
+    | '/blockchain'
+    | '/dashboard'
+    | '/elections'
+    | '/profile'
+    | '/results'
+    | '/elections/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,9 +187,17 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/admin'
+    | '/blockchain'
+    | '/dashboard'
+    | '/elections'
+    | '/profile'
+    | '/results'
+    | '/elections/$id'
   id:
     | '__root__'
     | '/'
+    | '/_app'
     | '/about'
     | '/contact'
     | '/faq'
@@ -121,10 +205,18 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/_app/admin'
+    | '/_app/blockchain'
+    | '/_app/dashboard'
+    | '/_app/elections'
+    | '/_app/profile'
+    | '/_app/results'
+    | '/_app/elections/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
@@ -185,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -192,11 +291,93 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/results': {
+      id: '/_app/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof AppResultsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/elections': {
+      id: '/_app/elections'
+      path: '/elections'
+      fullPath: '/elections'
+      preLoaderRoute: typeof AppElectionsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/blockchain': {
+      id: '/_app/blockchain'
+      path: '/blockchain'
+      fullPath: '/blockchain'
+      preLoaderRoute: typeof AppBlockchainRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/elections/$id': {
+      id: '/_app/elections/$id'
+      path: '/$id'
+      fullPath: '/elections/$id'
+      preLoaderRoute: typeof AppElectionsIdRouteImport
+      parentRoute: typeof AppElectionsRoute
+    }
   }
 }
 
+interface AppElectionsRouteChildren {
+  AppElectionsIdRoute: typeof AppElectionsIdRoute
+}
+
+const AppElectionsRouteChildren: AppElectionsRouteChildren = {
+  AppElectionsIdRoute: AppElectionsIdRoute,
+}
+
+const AppElectionsRouteWithChildren = AppElectionsRoute._addFileChildren(
+  AppElectionsRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
+  AppBlockchainRoute: typeof AppBlockchainRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppElectionsRoute: typeof AppElectionsRouteWithChildren
+  AppProfileRoute: typeof AppProfileRoute
+  AppResultsRoute: typeof AppResultsRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
+  AppBlockchainRoute: AppBlockchainRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppElectionsRoute: AppElectionsRouteWithChildren,
+  AppProfileRoute: AppProfileRoute,
+  AppResultsRoute: AppResultsRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
