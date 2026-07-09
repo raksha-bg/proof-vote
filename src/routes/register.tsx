@@ -34,8 +34,8 @@ function RegisterPage() {
     setLoading(true);
     try {
       await register(parsed.data);
-      toast.success("Account created — check your inbox to verify your email.");
-      navigate({ to: "/login" });
+      toast.success("Account created! Welcome to BlockVote.");
+      navigate({ to: "/dashboard" });
     } catch (err) {
       toast.error(apiErrorMessage(err, "Registration failed"));
     } finally {
